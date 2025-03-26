@@ -1,0 +1,41 @@
+.character-cards,
+.vehicles-cards,
+.planet-cards {
+  gap: 25px;
+  overflow-x: scroll;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.databank-title {
+  background-color: black;
+}
+
+.h-100 {
+  overflow-y: auto !important;
+}
+
+.character,
+.vehicle,
+.planet {
+  color: white;
+  font-family: "Roboto", sans-serif;
+}
+.card {
+  width: 250px;
+  background-color: rgb(29, 30, 31);
+  height: 350px;
+  flex-shrink: 0;
+}
+
+.card-title,
+.card-text {
+  color: white;
+}
+
+.DataBank {
+  margin-left: 7%;
+  margin-right: 7%;
+}
