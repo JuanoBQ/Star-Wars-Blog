@@ -1,45 +1,35 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../styles/card.css";
-
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 
 const CharacterCard = () => {
-
-
-
-  const {store, actions} = useContext(Context)
-  const [props, setProps] = useState({});
+  const { store, actions } = useContext(Context);
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(store.favorites)
-    const getProps = async () => {
-      try {
-        const response = await fetch(`https://www.swapi.tech/api/people/${id}`);
-        console.log(response.status);
-        const data = await response.json();
-        setProps(data.result.properties);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    actions.getCharacterDetails(id);
+  }, [id, actions]);
 
-    getProps();
-  }, []);
-  
+  const props = store.characterDetails;
+
+  if (!props) {
+    return (
+      <div className="card-title d-flex justify-content-center">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="d-flex align-items-center flex-column">
       <div className="card-info d-flex">
         <div className="img">
-          <img
-            src={store.charactersImg[`${id}`]}
-            style={{ height: "100%" }}
-          />
+          <img src={store.charactersImg[`${id}`]} style={{ height: "100%" }} />
         </div>
         <div className="card-body d-flex flex-column justify-contetn-center">
           <h3 className="card-title">{props.name}</h3>
-          <hr></hr>
+          <hr />
           <p>
             The characters of Star Wars are diverse and complex, encompassing a
             wide range of roles and personalities. From brave heroes like Jedi

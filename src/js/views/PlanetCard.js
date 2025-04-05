@@ -1,31 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../styles/card.css";
-import { useLocation, useParams } from "react-router";
-import { useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 
 const PlanetCard = () => {
-
   const { store, actions } = useContext(Context);
-  const [props, setProps] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
-    const getProps = async () => {
-      try {
-        const response = await fetch(
-          `https://www.swapi.tech/api/planets/${id}`
-        );
-        console.log(response.status);
-        const data = await response.json();
-        setProps(data.result.properties);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    actions.getPlanetDetails(id);
+  }, [id, actions]);
 
-    getProps();
-  }, []);
+  const props = store.planetDetails;
+
+  if (!props) {
+    return (
+      <div className="card-title d-flex justify-content-center">Loading...</div>
+    );
+  }
 
   return (
     <div className="d-flex align-items-center flex-column">
@@ -35,7 +27,7 @@ const PlanetCard = () => {
         </div>
         <div className="card-body d-flex flex-column">
           <h3 className="card-title">{props.name}</h3>
-          <hr></hr>
+          <hr />
           <p>
             The planets of Star Wars are diverse and rich in detail, each with
             its own ecosystem, culture, and history. These worlds, ranging from
@@ -88,7 +80,6 @@ const PlanetCard = () => {
         </div>
         <div className="d-flex col-1 flex-column ms-4 border-end">
           <h5 className="card-title">Population</h5>
-
           <h6 className="card-title">{props.population}</h6>
         </div>
       </div>

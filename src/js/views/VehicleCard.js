@@ -1,30 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../styles/card.css";
-import { useLocation, useParams } from "react-router";
-import { useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 
 const VehicleCard = () => {
-  const { store,actions}=useContext(Context)
-  const [props, setProps] = useState({});
-  const {id} = useParams()
+  const { store, actions } = useContext(Context);
+  const { id } = useParams();
 
   useEffect(() => {
-    const getProps = async () => {
-      try {
-        const response = await fetch(
-          `https://www.swapi.tech/api/vehicles/${id}`
-        );
-        console.log(response.status);
-        const data = await response.json();
-        setProps(data.result.properties);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    actions.getVehicleDetails(id);
+  }, [id, actions]);
 
-    getProps();
-  }, []);
+  const props = store.vehicleDetails;
+
+  if (!props) {
+    return (
+      <div className="card-title d-flex justify-content-center">Loading...</div>
+    );
+  }
 
   return (
     <div className="d-flex align-items-center flex-column">
@@ -34,7 +27,7 @@ const VehicleCard = () => {
         </div>
         <div className="card-body d-flex flex-column">
           <h3 className="card-title">{props.name}</h3>
-          <hr></hr>
+          <hr />
           <p>
             The vehicles of Star Wars are advanced and versatile machines that
             vary in design and function, adapting to the different environments

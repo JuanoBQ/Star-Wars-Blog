@@ -39,21 +39,53 @@ const getState = ({ getStore, getActions, setStore }) => {
         return storedFavorites && storedFavorites !== "undefined"
           ? JSON.parse(storedFavorites)
           : [];
-      })(), 
+      })(),
       charactersImg: {
-        1: c1, 2: c2, 3: c3, 4: c4, 5: c5,
-        6: c6, 7: c7, 8: c8, 9: c9, 10: c10,
+        1: c1,
+        2: c2,
+        3: c3,
+        4: c4,
+        5: c5,
+        6: c6,
+        7: c7,
+        8: c8,
+        9: c9,
+        10: c10,
       },
 
       vehiclesImg: {
-        4: v4, 7: v7, 6: v6, 8: v8, 14: v14,
-        18: v18, 16: v16, 19: v19, 20: v20, 24: v24,
+        4: v4,
+        7: v7,
+        6: v6,
+        8: v8,
+        14: v14,
+        18: v18,
+        16: v16,
+        19: v19,
+        20: v20,
+        24: v24,
       },
 
       planetsImg: {
-        1: p1, 2: p2, 3: p3, 4: p4, 5: p5,
-        6: p6, 7: p7, 8: p8, 9: p9, 10: p10,
+        1: p1,
+        2: p2,
+        3: p3,
+        4: p4,
+        5: p5,
+        6: p6,
+        7: p7,
+        8: p8,
+        9: p9,
+        10: p10,
       },
+
+      characters: [],
+      vehicles: [],
+      planets: [],
+
+      characterDetails: null,
+      vehicleDetails: null,
+      planetDetails: null,
     },
 
     actions: {
@@ -72,10 +104,73 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ favorites: newList });
         localStorage.setItem("favorites", JSON.stringify(newList));
       },
+
+      getCharacters: async () => {
+        try {
+          const response = await fetch("https://www.swapi.tech/api/people");
+          const data = await response.json();
+          setStore({ characters: data.results });
+        } catch (error) {
+          console.error(error);
+        }
+      },
+
+      getVehicles: async () => {
+        try {
+          const response = await fetch("https://www.swapi.tech/api/vehicles");
+          const data = await response.json();
+          setStore({ vehicles: data.results });
+        } catch (error) {
+          console.error(error);
+        }
+      },
+
+      getPlanets: async () => {
+        try {
+          const response = await fetch("https://www.swapi.tech/api/planets");
+          const data = await response.json();
+          setStore({ planets: data.results });
+        } catch (error) {
+          console.error(error);
+        }
+      },
+
+      getCharacterDetails: async (id) => {
+        try {
+          const response = await fetch(
+            `https://www.swapi.tech/api/people/${id}`
+          );
+          const data = await response.json();
+          setStore({ characterDetails: data.result.properties });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getVehicleDetails: async (id) => {
+        try {
+          const response = await fetch(
+            `https://www.swapi.tech/api/vehicles/${id}`
+          );
+          const data = await response.json();
+          setStore({ vehicleDetails: data.result.properties });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      getPlanetDetails: async (id) => {
+        try {
+          const response = await fetch(
+            `https://www.swapi.tech/api/planets/${id}`
+          );
+          const data = await response.json();
+          setStore({ planetDetails: data.result.properties });
+        } catch (error) {
+          console.log(error);
+        }
+      },
     },
   };
 };
 
 export default getState;
-
-
