@@ -11,7 +11,7 @@ export const Home = () => {
     actions.getCharacters();
     actions.getVehicles();
     actions.getPlanets();
-  }, [actions]);
+  }, []);
 
   const addFav = (newItem, uid, type) => {
     actions.setFavorites(newItem, uid, type);
